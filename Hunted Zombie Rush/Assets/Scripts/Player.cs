@@ -29,12 +29,16 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetMouseButtonDown(0)) {
-            Debug.Log("Jump");
-            anim.Play("Jump");
-            audioSource.PlayOneShot(sfxJump);
-            rigidbody.useGravity = true;
-            jump = true;
+        if (!GameManager.instance.GameOver && GameManager.instance.GameStarted) {
+
+            if (Input.GetMouseButtonDown(0)) {
+                GameManager.instance.PlayerStartedGame();
+                Debug.Log("Jump");
+                anim.Play("Jump");
+                audioSource.PlayOneShot(sfxJump);
+                rigidbody.useGravity = true;
+                jump = true;
+            }
         }
 	}
     private void FixedUpdate() {
@@ -51,6 +55,7 @@ public class Player : MonoBehaviour {
             rigidbody.AddForce(new Vector2(50, 20), ForceMode.Impulse);
             rigidbody.detectCollisions = false;
             audioSource.PlayOneShot(sfxDeath);
+            GameManager.instance.PlayerCollided(); 
         }
     }
 }
